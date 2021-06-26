@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -83,10 +84,12 @@ public class GameController : MonoBehaviour
 
 
     // Custom controller functions
-    void EndGame(){
+    public void EndGame(){
         // TODO 
 
         // go to main menu
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        
     }
 
     /**
