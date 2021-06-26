@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class EnergyController : MonoBehaviour
 {
-
-    [ReadOnly] 
-    GameController controller;
     [SerializeField] 
     float charge = 10;
     [SerializeField] 
