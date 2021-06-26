@@ -20,7 +20,7 @@ public class MoodController : MonoBehaviour
 
     [SerializeField]
     [Range(0f,1f)]
-    float minimun_brightness = 0.2f;
+    float min_brightness = 0.2f;
     float original_intensity = 0f;
 
     [SerializeField]
@@ -39,7 +39,7 @@ public class MoodController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        player_light.intensity = Mathf.Lerp(original_intensity * minimun_brightness, original_intensity, mood);
+        player_light.intensity = Mathf.Lerp(original_intensity * min_brightness, original_intensity, mood);
 
         float energy_percent = energy_controller.getEnergyPercentaje();
         if(energy_percent < 0.9){
