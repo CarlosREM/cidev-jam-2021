@@ -36,7 +36,7 @@ public class MovementController : MonoBehaviour
         movementInput = WASD.ReadValue<Vector2>();
 
         if(movementInput.x != 0){
-            transform.localScale = new Vector2(-Mathf.Sign(movementInput.x), 1);
+            transform.localScale = new Vector2(-Mathf.Sign(movementInput.x) * Mathf.Abs(transform.localScale.x), transform.localScale.y);
         }
     }
 
