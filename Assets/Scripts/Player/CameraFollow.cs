@@ -15,6 +15,11 @@ public class CameraFollow : MonoBehaviour
     float mouseSensitivity;
     [SerializeField]
     float maxLookout;
+
+    [SerializeField]
+    float deadzoneX = 0.3f;
+    float deadzoneY = 0.2f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,9 +37,21 @@ public class CameraFollow : MonoBehaviour
     //modify postion according to mouse position
     // Vector2 screenPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
     Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+    float x_lookout = - (temp.x - worldPosition.x ) * mouseSensitivity;
+    float y_lookout = - (temp.y - worldPosition.y ) * mouseSensitivity;
 
-    temp.x += Mathf.Lerp(-maxLookout,maxLookout,- (temp.x - worldPosition.x ) * mouseSensitivity + offset.x);
-    temp.y +=  Mathf.Lerp(-maxLookout,maxLookout,- (temp.y - worldPosition.y )*mouseSensitivity + offset.y);
+    if(Mathf.Sign(x_lookout)> 0 ){
+        temp.x += Mathf.Lerp( 0,maxLookout,x_lookout - deadzoneX);
+
+    }else{
+        temp.x += Mathf.Lerp( 0,-maxLookout, Mathf.Abs(x_lookout) - deadzoneX);
+    }
+
+    if(Mathf.Sign(y_lookout)> 0 ){
+        temp.y +=  Mathf.Lerp(0,maxLookout,y_lookout - deadzoneY );
+    }else{
+        temp.y +=  Mathf.Lerp(0,-maxLookout,Mathf.Abs( y_lookout ) - deadzoneY);
+    }
     
     transform.position = temp;
  }
