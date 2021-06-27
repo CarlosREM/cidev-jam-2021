@@ -12,6 +12,8 @@ public class GameController : MonoBehaviour
     public int money{get; private set; } = 0;
     [ReadOnly]
     WaveController wave_controller;
+    [ReadOnly]
+    WeaponController weapon_controller;
 
 
     [SerializeField]
@@ -123,21 +125,26 @@ public class GameController : MonoBehaviour
         money += new_money;
     }
 
-    public bool CanPurchase(int price){
-        if(price <= money){
-            return true;
-        }
-        return false;
-
+    public int getPrice( int index){
+        return weapon_controller.getPrice(index);
     }
 
-    public bool Purchase (int price){
-        if(price <= money){
-            money -= price;
+    public bool CanPurchase( int index){
+        int price = weapon_controller.getPrice(index);
+        if(price <= money && price > 0){
             return true;
         }
         return false;
+    }
 
+    public bool Purchase( int index ){
+        int price = weapon_controller.getPrice(index);
+        if(price <= money && price > 0){
+            money -= price;
+            weapon_controller.upgrade(index);
+            return true;
+        }
+        return false;
     }
 
     /**
