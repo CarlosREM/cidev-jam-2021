@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Charger : MonoBehaviour
 {
-    float charge_speed = 0.8f;
+    [SerializeField]
+    float charge_speed = 0.7f;
 
     private void OnTriggerStay2D(Collider2D collider)
     {

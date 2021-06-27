@@ -36,8 +36,8 @@ public class CameraFollow : MonoBehaviour
     //modify postion according to mouse position
     // Vector2 screenPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
     Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-    float x_lookout = - (temp.x - worldPosition.x ) * mouseSensitivity;
-    float y_lookout = - (temp.y - worldPosition.y ) * mouseSensitivity;
+    float x_lookout = -(temp.x - worldPosition.x ) * mouseSensitivity;
+    float y_lookout = -(temp.y - worldPosition.y ) * mouseSensitivity;
 
     if(Mathf.Sign(x_lookout)> 0 ){
         temp.x += Mathf.Lerp( 0,maxLookout,x_lookout - deadzone.x);

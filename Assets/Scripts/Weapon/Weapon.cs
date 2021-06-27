@@ -73,7 +73,7 @@ public class Weapon : MonoBehaviour
     {
         cooldown -= Time.deltaTime ;
         if(cooldown <= 0 && shooting){
-            Debug.Log("shooting");
+            // Debug.Log("shooting");
             Shoot();
             cooldown = Mathf.Max(min_cadence, cadence_time - cadence_time_by_level*level);
         }

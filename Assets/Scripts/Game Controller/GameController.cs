@@ -14,6 +14,10 @@ public class GameController : MonoBehaviour
     WaveController wave_controller;
     [ReadOnly]
     WeaponController weapon_controller;
+    [ReadOnly]
+    EnergyController energy_controller;
+    [ReadOnly]
+    MoodController mood_controller;
 
 
     [SerializeField]
@@ -45,10 +49,19 @@ public class GameController : MonoBehaviour
     [ReadOnly]
     HudManager hud_manager;
 
+    [SerializeField]
+    public int bravery_level = 0;
+    [SerializeField]
+    public int battery_level = 0;
+    [SerializeField]
+    public int luck = 0;
+
     // Start is called before the first frame update
     void Start()
     {
         wave_controller = (WaveController)FindObjectOfType(typeof(WaveController));
+        energy_controller = (EnergyController)FindObjectOfType(typeof(EnergyController));
+        mood_controller = (MoodController)FindObjectOfType(typeof(MoodController));
         hud_manager = (HudManager) FindObjectOfType(typeof(HudManager));   
         RecalculateDifficulty();
     }
@@ -78,6 +91,9 @@ public class GameController : MonoBehaviour
         Debug.Log(time);
         //call wave controller
         wave_controller.StartWave();
+        //reset player stats
+        mood_controller.ResetMood();
+        energy_controller.ResetEnergy();
     }
 
     void EndWave(){
@@ -85,7 +101,11 @@ public class GameController : MonoBehaviour
         Debug.Log(wave);
         //call wave controller
         wave_controller.EndWave();
+        AddExp(1);
+
+
         // open menu
+
     }
 
 
@@ -170,6 +190,30 @@ public class GameController : MonoBehaviour
         }
         return false;
     }
+
+    public bool increase_bravery(){
+        bool succesfull = ExpendExp(1);
+        if(succesfull){
+            bravery_level++;
+        }
+        return succesfull;
+    }
+
+    public bool increase_lucky(){
+        bool succesfull = ExpendExp(1);
+        if(succesfull){
+            luck++;
+        }
+        return succesfull;
+    }
+    public bool increase_battery(){
+        bool succesfull = ExpendExp(1);
+        if(succesfull){
+            battery_level++;
+        }
+        return succesfull;
+    }
+
 
 
 }

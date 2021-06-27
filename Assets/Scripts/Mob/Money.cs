@@ -9,6 +9,9 @@ public class Money : MonoBehaviour
 
     [SerializeField]
     public int value = 5;
+
+    [SerializeField]
+    public float money_by_luck = 0.5f;
     [SerializeField]
     float rot_speed=0.5f;
 
@@ -31,7 +34,9 @@ public class Money : MonoBehaviour
     }
 
     public void set_value(int min, int max){
-        value = Random.Range(min, max + 1);
+        controller = (GameController)FindObjectOfType(typeof(GameController));
+        float extra_by_luck = money_by_luck *controller.luck;
+        value = Random.Range(min + (int)Mathf.Ceil(extra_by_luck), max + 1 + (int)Mathf.Ceil(extra_by_luck));
         transform.localScale = transform.localScale*Random.Range(0.7f, 1.0f);
     }
 }
