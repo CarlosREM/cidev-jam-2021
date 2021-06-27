@@ -9,6 +9,8 @@ TagManager:
   - PlayerBullet
   - Mob
   - MobBullet
+  - Music Manager
+  - Scene Manager
   layers:
   - Default
   - TransparentFX
@@ -23,8 +25,8 @@ TagManager:
   - Player Bullet
   - Money
   - 
-  - 
-  - 
+  - Terrain
+  - Player Terrain
   - 
   - 
   - 

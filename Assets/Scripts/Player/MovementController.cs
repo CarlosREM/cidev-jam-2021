@@ -33,9 +33,15 @@ public class MovementController : MonoBehaviour
         playerAnimator = GetComponent<Animator>();
 
         Physics2D.IgnoreLayerCollision(9, 10);
+        
         //bullets should not collide money
         Physics2D.IgnoreLayerCollision(11, 10);
-        // myAvatar =transform.GetChild(0);
+
+        // player collider is only for enemy detection
+        Physics2D.IgnoreLayerCollision(9, 13);
+
+        // bullets ignore player terrain collider
+        Physics2D.IgnoreLayerCollision(10, 14);
 
         shootAction.Enable();
         shootAction.started += context => { isShooting = true;};
