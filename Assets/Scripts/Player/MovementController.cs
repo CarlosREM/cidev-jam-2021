@@ -28,6 +28,8 @@ public class MovementController : MonoBehaviour
     {
         myRB = GetComponent<Rigidbody2D>();
         Physics2D.IgnoreLayerCollision(9, 10);
+        //bullets should not collide money
+        Physics2D.IgnoreLayerCollision(11, 10);
         // myAvatar =transform.GetChild(0);
     }
 
