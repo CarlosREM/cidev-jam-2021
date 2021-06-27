@@ -72,7 +72,7 @@ public class WeaponController : MonoBehaviour
         current_weapon = (current_weapon-1)%weapons.Length;
         if(current_weapon < 0) current_weapon = weapons.Length - 1;
         weapons[current_weapon].GetComponent<Weapon>().active_weapon=true;
-        weapons[current_weapon].GetComponent<Weapon>().upgrade();
+        // weapons[current_weapon].GetComponent<Weapon>().upgrade();
         if(weapons[current_weapon].GetComponent<Weapon>().purchased == false){
             calculat_previous_weapon();
         }
