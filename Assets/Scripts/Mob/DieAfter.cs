@@ -10,15 +10,15 @@ public class DieAfter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        life_time -= Time.deltaTime;
-        if(life_time<=0){
-            Destroy(gameObject);
-        }
+       
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        life_time -= Time.deltaTime;
+        if(life_time<=0){
+            Destroy(gameObject);
+        }
     }
 }
