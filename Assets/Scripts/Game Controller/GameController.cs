@@ -59,6 +59,14 @@ public class GameController : MonoBehaviour
 
     [Header("UI Overlays")]
     [SerializeField] CanvasGroup GameOverCanvas;
+    [SerializeField] CanvasGroup UpgradeCanvas;
+
+
+    [Header("Music")]
+    [SerializeField] AudioClip gameLoopMusic;
+    [SerializeField] AudioClip upgradeMusic;
+    AudioSource bgm;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -68,6 +76,11 @@ public class GameController : MonoBehaviour
         mood_controller = (MoodController)FindObjectOfType(typeof(MoodController));
         hud_manager = (HudManager) FindObjectOfType(typeof(HudManager));   
         RecalculateDifficulty();
+
+        bgm = GameObject.FindWithTag("Music Manager").GetComponent<AudioSource>();
+
+
+        time = 0;
     }
 
     // Update is called once per frame
@@ -77,8 +90,6 @@ public class GameController : MonoBehaviour
         hud_manager.SetNightProgress(wave_time - time, wave_time);
         if(time <= 0 && wave_controller.active){
             EndWave();
-        }else if(time <= 0){
-            StartWave();
         }
         RecalculateDifficulty();
     }
@@ -89,7 +100,7 @@ public class GameController : MonoBehaviour
     * Game Loop
     * -----------------------------------------------------
     **/
-    void StartWave(){
+    public void StartWave(){
         time = base_time  + time_increase_per_wave * wave;
         wave_time = time;
         Debug.Log(time);
@@ -98,6 +109,10 @@ public class GameController : MonoBehaviour
         //reset player stats
         mood_controller.ResetMood();
         energy_controller.ResetEnergy();
+
+        bgm.Stop();
+        bgm.clip = gameLoopMusic;
+        bgm.Play();
     }
 
     void EndWave(){
@@ -109,7 +124,34 @@ public class GameController : MonoBehaviour
 
 
         // open menu
+        UpgradeRoom();
+    }
 
+    void UpgradeRoom() {
+        Vector3 roomPos = new Vector3(0, -3.5f, 0);
+        mood_controller.gameObject.transform.position = roomPos;
+
+        bgm.Stop();
+        bgm.clip = upgradeMusic;
+        bgm.Play();
+
+        //StartCoroutine(UpgradeMenuVisible(true));
+    }
+    IEnumerator UpgradeMenuVisible(bool isVisible) {
+
+        float step = (isVisible) ? 0.01f : -0.02f;
+
+        while( (isVisible && UpgradeCanvas.alpha < 1) 
+            || (!isVisible && UpgradeCanvas.alpha > 0)) {
+            UpgradeCanvas.alpha += step;
+            yield return new WaitForSecondsRealtime(Time.unscaledDeltaTime);
+        }
+
+        UpgradeCanvas.interactable = isVisible;
+        UpgradeCanvas.blocksRaycasts = isVisible;
+    }
+    public void hideUpgradeMenu() {
+        StartCoroutine(UpgradeMenuVisible(false));
     }
 
 
