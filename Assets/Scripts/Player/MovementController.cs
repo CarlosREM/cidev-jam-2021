@@ -10,11 +10,14 @@ public class MovementController : MonoBehaviour
     Animator playerAnimator;
 
     //Player movement
-    [SerializeField] 
-    InputAction WASD;
+    [SerializeField] InputAction WASD;
     Vector2 movementInput;
-    [SerializeField] 
-    float movementSpeed;
+
+    [SerializeField] float movementSpeed;
+
+    
+    [SerializeField] InputAction shootAction;
+    bool isShooting = false;
 
 
     private void OnEnable() {
@@ -33,6 +36,10 @@ public class MovementController : MonoBehaviour
         //bullets should not collide money
         Physics2D.IgnoreLayerCollision(11, 10);
         // myAvatar =transform.GetChild(0);
+
+        shootAction.Enable();
+        shootAction.started += context => { isShooting = true;};
+        shootAction.canceled += context => { isShooting = false;};
     }
 
     // Update is called once per frame
@@ -42,14 +49,18 @@ public class MovementController : MonoBehaviour
 
         float playAnimator = (movementInput.magnitude == 0) ? 0 : 1;
 
-        if (playAnimator == 0)
-            playerAnimator.Play("Movement", 0, 0);
+        if (playAnimator == 0) {
+            string animState = (isShooting) ? "Attack" : "Movement";
+            playerAnimator.Play(animState, 0, 0);
+        }
         
         else {
             playerAnimator.SetFloat("Horizontal", movementInput.x);
             playerAnimator.SetFloat("Vertical", movementInput.y);
         }
         playerAnimator.SetFloat("AnimSpeed", playAnimator);
+
+        playerAnimator.SetBool("Attack", isShooting);
     }
 
     private void FixedUpdate() {
