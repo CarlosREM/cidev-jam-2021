@@ -107,7 +107,7 @@ MonoBehaviour:
   bullet_speed: 200
   bullet_speed_by_level: 20
   max_bullet_speed: 600
-  cost: 0
+  cost: 20
   cost_by_level: 10
   exp_cost_by_level: 0.01
   cooldown: 0
@@ -128,4 +128,5 @@ MonoBehaviour:
       m_Action: Shoot
       m_Flags: 0
   skill_prefab: {fileID: 0}
-  bullet_prefab: {fileID: 7805669954584206238, guid: cbaab4a2c6077e442a3e5855c43d5698, type: 3}
+  bullet_prefab:
+  - {fileID: 7805669954584206238, guid: cbaab4a2c6077e442a3e5855c43d5698, type: 3}

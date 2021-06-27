@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Charger
   - PlayerBullet
+  - Mob
+  - MobBullet
   layers:
   - Default
   - TransparentFX

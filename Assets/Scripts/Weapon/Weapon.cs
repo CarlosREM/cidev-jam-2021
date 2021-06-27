@@ -50,7 +50,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] 
     GameObject skill_prefab;
     [SerializeField] 
-    GameObject bullet_prefab;
+    GameObject[] bullet_prefab;
 
     bool shooting = false;
 
@@ -77,11 +77,14 @@ public class Weapon : MonoBehaviour
     }
 
     void Shoot(){
+        int random_index = Random.Range(0, bullet_prefab.Length);
+
+
         Vector3 difference = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()) - transform.position;
         float new_spread = Mathf.Max(min_spread, spread + spread_by_level*level);
         float rotation_z = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg + Random.Range(-new_spread/2, new_spread/2);
         Quaternion target_rotation = Quaternion.Euler(0f, 0f, rotation_z);
-        GameObject new_bullet = Instantiate(bullet_prefab, transform.position, target_rotation ) as GameObject;
+        GameObject new_bullet = Instantiate(bullet_prefab[random_index], transform.position, target_rotation ) as GameObject;
         float new_speed = Mathf.Max(max_bullet_speed, bullet_speed + bullet_speed_by_level*level);
         new_bullet.GetComponent<Rigidbody2D>().AddForce(new_bullet.transform.right * new_speed);
         float new_damage = Mathf.Min(max_damage, damage + damage_by_level*level);

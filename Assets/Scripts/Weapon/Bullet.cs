@@ -7,6 +7,8 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField]
     float life_time = 5;
+    [SerializeField]
+    GameObject special_effect = null;
     // Start is called before the first frame update
     public float damage{get;set;} = 1f;
 
@@ -20,11 +22,18 @@ public class Bullet : MonoBehaviour
     {
         life_time -= Time.deltaTime;
         if(life_time<=0){
-            Destroy(gameObject);
+            end_life();
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
+        end_life();
+    }
+
+    private void end_life(){
+        if(special_effect != null){
+            Instantiate(special_effect, transform.position,Quaternion.identity);
+        }
         Destroy(gameObject);
     }
 }

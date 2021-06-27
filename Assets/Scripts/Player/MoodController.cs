@@ -28,6 +28,13 @@ public class MoodController : MonoBehaviour
     [SerializeField]
     float max_mood_gain = 0.1f;
 
+    [SerializeField]
+    float mob_contact_damage= 0.05f;
+    [SerializeField]
+    float damage_tick = 0.5f;
+    [SerializeField]
+    float damage_cooldown = 0.5f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,12 +60,32 @@ public class MoodController : MonoBehaviour
             //Die
             controller.EndGame();
         }
-    }
 
-    
+        //damage
+        damage_cooldown -= Time.deltaTime;
+    }
 
     void ResetMood(){
         mood = 1;
     }
 
+    private void OnCollisionEnter2D(Collision2D other) {
+        if(other.gameObject.tag == "Mob"){
+            ContactDamage();
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D other) {
+        if(other.gameObject.tag == "Mob"){
+            ContactDamage();
+        }
+    }
+
+    private void ContactDamage(){
+        if(damage_cooldown <= 0){
+            Debug.Log("Contact damage");
+            damage_cooldown = damage_tick;
+            mood -= mob_contact_damage;
+        }
+    }
 }
