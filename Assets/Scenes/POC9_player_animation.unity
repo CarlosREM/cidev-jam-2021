@@ -12992,6 +12992,22 @@ MonoBehaviour:
       m_Action: WASD
       m_Flags: 8
   movementSpeed: 5
+  shootAction:
+    m_Name: Shoot
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: bbd3c3e4-951c-4241-9492-acf27d66db56
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: d54e457b-f6f5-4ba4-9fc4-0c4e48bc51d9
+      m_Path: '*/{PrimaryAction}'
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Shoot
+      m_Flags: 0
 --- !u!50 &1194747835
 Rigidbody2D:
   serializedVersion: 4
