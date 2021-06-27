@@ -10,6 +10,9 @@ public class DumbMobAI : MonoBehaviour
 
     [SerializeField]
     float health = 10f;
+
+    [SerializeField]
+    GameObject money_loot;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +26,8 @@ public class DumbMobAI : MonoBehaviour
         float step =  speed * Time.deltaTime; // calculate distance to move
         transform.position = Vector3.MoveTowards(transform.position, target_pos, step);
         if(health <= 0){
+            GameObject new_money = Instantiate(money_loot, transform.position,Quaternion.identity );
+            new_money.GetComponent<Money>().set_value(3,7);
             Destroy(gameObject);
         }
     }

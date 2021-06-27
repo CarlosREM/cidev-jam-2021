@@ -15,6 +15,9 @@ public class MoodController : MonoBehaviour
     [ReadOnly]
     EnergyController energy_controller;
 
+    [ReadOnly]
+    HudManager hud_manager;
+
     [SerializeField]
     Light2D player_light;
 
@@ -39,6 +42,7 @@ public class MoodController : MonoBehaviour
     void Start()
     {
       controller = (GameController)FindObjectOfType(typeof(GameController));
+      hud_manager = (HudManager) FindObjectOfType(typeof(HudManager));
       energy_controller = gameObject.GetComponent<EnergyController>();
       original_intensity = player_light.intensity;
     }
@@ -47,7 +51,7 @@ public class MoodController : MonoBehaviour
     void Update()
     {
         player_light.intensity = Mathf.Lerp(original_intensity * min_brightness, original_intensity, mood);
-
+        hud_manager.SetSanityValue(mood,1);
         float energy_percent = energy_controller.getEnergyPercentaje();
         if(energy_percent < 0.9){
             mood -= Mathf.Lerp(0, max_mood_loss, 1 - energy_percent) * Time.deltaTime;

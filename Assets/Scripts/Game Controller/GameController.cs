@@ -42,10 +42,14 @@ public class GameController : MonoBehaviour
     [ReadOnly]
     private float wave_time;
 
+    [ReadOnly]
+    HudManager hud_manager;
+
     // Start is called before the first frame update
     void Start()
     {
-        wave_controller = (WaveController)FindObjectOfType(typeof(WaveController));   
+        wave_controller = (WaveController)FindObjectOfType(typeof(WaveController));
+        hud_manager = (HudManager) FindObjectOfType(typeof(HudManager));   
         RecalculateDifficulty();
     }
 
@@ -53,6 +57,7 @@ public class GameController : MonoBehaviour
     void Update()
     {
         time -= Time.deltaTime;
+        hud_manager.SetNightProgress(wave_time - time, wave_time);
         if(time <= 0 && wave_controller.active){
             EndWave();
         }else if(time <= 0){
@@ -123,6 +128,7 @@ public class GameController : MonoBehaviour
     // Listener for mood observer
     public void OnMoneyCollected(int new_money){
         money += new_money;
+        hud_manager.SetBits(money);
     }
 
     public int getPrice( int index){
@@ -142,6 +148,7 @@ public class GameController : MonoBehaviour
         if(price <= money && price > 0){
             money -= price;
             weapon_controller.upgrade(index);
+            hud_manager.SetBits(money);
             return true;
         }
         return false;
