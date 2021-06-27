@@ -372,9 +372,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -9857,14 +9857,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 688439898}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Script: {fileID: 11500000, guid: ca01a472a62d18448bbe109210b8c904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
+  imgPortrait: {fileID: 2020797123}
+  imgWeapon: {fileID: 2031789424}
+  barSanity: {fileID: 1307355744}
+  barEnergy: {fileID: 88555962}
+  barNight: {fileID: 750206719}
+  displayBit: {fileID: 1574970524}
+  displayBitHiddenPos: {x: 54, y: -8}
+  displayBitShowPos: {x: -8, y: -8}
+  showBits: 0
+  bitShowDuration: 8
+  bitLerpDuration: 1
 --- !u!114 &688439900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12608,9 +12614,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
