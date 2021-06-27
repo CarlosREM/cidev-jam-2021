@@ -25,7 +25,7 @@ public class AudioManager : MonoBehaviour
 
         while (currentTime < duration)
         {
-            currentTime += Time.deltaTime;
+            currentTime += Time.unscaledDeltaTime;
             float newVol = Mathf.Lerp(currentVol, targetValue, currentTime / duration);
             audioMixer.SetFloat(exposedParam, Mathf.Log10(newVol) * 20);
             yield return null;

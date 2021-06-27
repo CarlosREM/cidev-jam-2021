@@ -14,6 +14,8 @@ public class TransitionManager : MonoBehaviour
     }
 
     void Start() {
+        Time.timeScale = 1;
+
         audioManager = GameObject.Find("Music Manager").GetComponent<AudioManager>();
         audioManager.FadeAudio(transitionDuration, 0, 1);
     }
@@ -28,7 +30,7 @@ public class TransitionManager : MonoBehaviour
         animator.SetTrigger("Transition");
         audioManager.FadeAudio(transitionDuration, 1, 0);
 
-        yield return new WaitForSeconds(transitionDuration);
+        yield return new WaitForSecondsRealtime(transitionDuration);
 
         SceneManager.LoadScene(sceneName);
     }

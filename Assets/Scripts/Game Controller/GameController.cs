@@ -56,6 +56,10 @@ public class GameController : MonoBehaviour
     [SerializeField]
     public int luck = 0;
 
+
+    [Header("UI Overlays")]
+    [SerializeField] CanvasGroup GameOverCanvas;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -113,11 +117,25 @@ public class GameController : MonoBehaviour
     // Custom controller functions
     public void EndGame(){
         // TODO 
+        Time.timeScale = 0;
 
         // go to main menu
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        
+        StartCoroutine(EndGameCoroutine());
     }
+    IEnumerator EndGameCoroutine() {
+
+        float step = 0.01f;
+        while(GameOverCanvas.alpha < 1) {
+            GameOverCanvas.alpha += step*Time.unscaledDeltaTime;
+            yield return new WaitForSecondsRealtime(Time.unscaledDeltaTime);
+        }
+
+        yield return new WaitForSecondsRealtime(3f);
+
+        GameObject.FindWithTag("Scene Manager").GetComponent<TransitionManager>().ChangeScene("MainMenu");
+        yield break;
+    }
+
 
     /**
     * -----------------------------------------------------
