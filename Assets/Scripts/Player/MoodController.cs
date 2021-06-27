@@ -37,6 +37,11 @@ public class MoodController : MonoBehaviour
     float damage_tick = 0.5f;
     [SerializeField]
     float damage_cooldown = 0.5f;
+    
+    [SerializeField]
+    float def_by_level = 0.03f;
+    [SerializeField]
+    float max_def = 0.5f;
 
     // Start is called before the first frame update
     void Start()
@@ -69,7 +74,7 @@ public class MoodController : MonoBehaviour
         damage_cooldown -= Time.deltaTime;
     }
 
-    void ResetMood(){
+    public void ResetMood(){
         mood = 1;
     }
 
@@ -89,7 +94,7 @@ public class MoodController : MonoBehaviour
         if(damage_cooldown <= 0){
             Debug.Log("Contact damage");
             damage_cooldown = damage_tick;
-            mood -= mob_contact_damage;
+            mood -= mob_contact_damage + mob_contact_damage * Mathf.Min(max_def, def_by_level *controller.bravery_level);
         }
     }
 }
