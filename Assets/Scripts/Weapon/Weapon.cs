@@ -98,6 +98,7 @@ public class Weapon : MonoBehaviour
 
     public void upgrade(){
         level++;
+        purchased = true;
     }
 
     public float get_upgrade_cost(){
