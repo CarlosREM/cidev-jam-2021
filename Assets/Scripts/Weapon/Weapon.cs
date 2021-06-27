@@ -51,8 +51,11 @@ public class Weapon : MonoBehaviour
     GameObject skill_prefab;
     [SerializeField] 
     GameObject[] bullet_prefab;
-
+    [SerializeField] 
+    public bool active_weapon = false;
+    public bool purchased = false;
     bool shooting = false;
+    
 
     // private void bool m_pressed;
     // private void bool m_released;
@@ -72,11 +75,12 @@ public class Weapon : MonoBehaviour
         if(cooldown <= 0 && shooting){
             Debug.Log("shooting");
             Shoot();
-            cooldown = Mathf.Max(min_cadence, cadence_time + cadence_time_by_level*level);
+            cooldown = Mathf.Max(min_cadence, cadence_time - cadence_time_by_level*level);
         }
     }
 
     void Shoot(){
+        if(!active_weapon) return;
         int random_index = Random.Range(0, bullet_prefab.Length);
 
 
@@ -94,6 +98,7 @@ public class Weapon : MonoBehaviour
 
     public void upgrade(){
         level++;
+        purchased = true;
     }
 
     public float get_upgrade_cost(){

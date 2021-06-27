@@ -11,6 +11,9 @@ public class Connector : MonoBehaviour
     [SerializeField]
     float speed = 5;
     GameObject player = null;
+
+    [SerializeField]
+    SpriteRenderer[] chain_renderers;
     // Start is called before the first frame update
     // void Start()
     // {
@@ -31,11 +34,18 @@ public class Connector : MonoBehaviour
         }
     }
 
+    void chain_visibility(bool new_value){
+        for(int i = 0; i < chain_renderers.Length; i++ ){
+            chain_renderers[i].enabled = new_value;
+        }
+    }
+
     void OnTriggerEnter2D(Collider2D collider)
     {
         if(collider.tag == "Player"){
             Debug.Log("Connected to player ...");
             player = collider.gameObject;
+            chain_visibility(true);
         }
         // Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
         // spriteMove = -0.1f;
@@ -44,6 +54,7 @@ public class Connector : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collider) {
         if(collider.tag == "Player"){
             player = null;
+            chain_visibility(false);
         }
     }
 }
