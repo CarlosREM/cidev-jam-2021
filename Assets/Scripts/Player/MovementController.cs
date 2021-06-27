@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class MovementController : MonoBehaviour
 {
     Rigidbody2D myRB;
-    // Transform myAvatar;
+    Animator playerAnimator;
 
     //Player movement
     [SerializeField] 
@@ -27,6 +27,8 @@ public class MovementController : MonoBehaviour
     void Start()
     {
         myRB = GetComponent<Rigidbody2D>();
+        playerAnimator = GetComponent<Animator>();
+
         Physics2D.IgnoreLayerCollision(9, 10);
         //bullets should not collide money
         Physics2D.IgnoreLayerCollision(11, 10);
@@ -38,9 +40,16 @@ public class MovementController : MonoBehaviour
     {
         movementInput = WASD.ReadValue<Vector2>();
 
-        if(movementInput.x != 0){
-            transform.localScale = new Vector2(-Mathf.Sign(movementInput.x) * Mathf.Abs(transform.localScale.x), transform.localScale.y);
+        float playAnimator = (movementInput.magnitude == 0) ? 0 : 1;
+
+        if (playAnimator == 0)
+            playerAnimator.Play("Movement", 0, 0);
+        
+        else {
+            playerAnimator.SetFloat("Horizontal", movementInput.x);
+            playerAnimator.SetFloat("Vertical", movementInput.y);
         }
+        playerAnimator.SetFloat("AnimSpeed", playAnimator);
     }
 
     private void FixedUpdate() {
