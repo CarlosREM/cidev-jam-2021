@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DumbMobAI : MonoBehaviour
 {
+    SpriteRenderer sprRenderer;
+
 
     [SerializeField]
     float speed = 2f;
@@ -26,8 +28,10 @@ public class DumbMobAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         controller = (GameController)FindObjectOfType(typeof(GameController));
         health = calculate_max_health();
+        sprRenderer = GetComponent<SpriteRenderer>();
     }
 
     float calculate_max_health(){
@@ -40,7 +44,11 @@ public class DumbMobAI : MonoBehaviour
         Vector3 target_pos = GameObject.FindWithTag("Player").transform.position;
         float step =  (speed + speed_by_difficulty * controller.difficulty) * Time.deltaTime; // calculate distance to move
         transform.position = Vector3.MoveTowards(transform.position, target_pos, step);
-        if(health <= 0){
+        
+        // if moving  to the left, flip sprite
+        sprRenderer.flipX = ((target_pos - transform.position).x > 0);
+
+        if(health <= 0) {
             GameObject new_money = Instantiate(money_loot, transform.position,Quaternion.identity );
             new_money.GetComponent<Money>().set_value(3,7);
             Destroy(gameObject);
