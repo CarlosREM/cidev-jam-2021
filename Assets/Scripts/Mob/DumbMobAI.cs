@@ -7,6 +7,9 @@ public class DumbMobAI : MonoBehaviour
 
     [SerializeField]
     float speed = 2f;
+
+    [SerializeField]
+    float health = 10f;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,5 +22,15 @@ public class DumbMobAI : MonoBehaviour
         Vector3 target_pos = GameObject.FindWithTag("Player").transform.position;
         float step =  speed * Time.deltaTime; // calculate distance to move
         transform.position = Vector3.MoveTowards(transform.position, target_pos, step);
+        if(health <= 0){
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if(collision.gameObject.tag == "PlayerBullet"){
+            Debug.Log("Collition with mob");
+            health -= collision.gameObject.GetComponent<Bullet>().damage;
+        }
     }
 }
