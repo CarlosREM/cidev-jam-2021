@@ -11851,6 +11851,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1194747833}
     m_Modifications:
+    - target: {fileID: 4828622950149326436, guid: c9d9ffea64fcf1943bce360318026c27, type: 3}
+      propertyPath: m_SortingOrder
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 4828622950149326437, guid: c9d9ffea64fcf1943bce360318026c27, type: 3}
+      propertyPath: bullet_prefab
+      value: 
+      objectReference: {fileID: 7805669954584206238, guid: cbaab4a2c6077e442a3e5855c43d5698, type: 3}
     - target: {fileID: 4828622950149326438, guid: c9d9ffea64fcf1943bce360318026c27, type: 3}
       propertyPath: m_Name
       value: Base Weapon

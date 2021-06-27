@@ -27,6 +27,7 @@ public class MovementController : MonoBehaviour
     void Start()
     {
         myRB = GetComponent<Rigidbody2D>();
+        Physics2D.IgnoreLayerCollision(9, 10);
         // myAvatar =transform.GetChild(0);
     }
 
