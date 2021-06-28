@@ -5,6 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Charger
+  - UI Manager
+  - PlayerBullet
+  - Mob
+  - MobBullet
+  - Music Manager
+  - Scene Manager
   layers:
   - Default
   - TransparentFX
@@ -15,18 +21,18 @@ TagManager:
   - 
   - 
   - 
+  - Player
+  - Player Bullet
+  - Money
+  - 
+  - Terrain
+  - Player Terrain
   - 
   - 
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Obstacle
   - 
   - 
   - 

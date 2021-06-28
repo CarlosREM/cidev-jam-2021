@@ -12,6 +12,12 @@ public class GameController : MonoBehaviour
     public int money{get; private set; } = 0;
     [ReadOnly]
     WaveController wave_controller;
+    [ReadOnly]
+    WeaponController weapon_controller;
+    [ReadOnly]
+    EnergyController energy_controller;
+    [ReadOnly]
+    MoodController mood_controller;
 
 
     [SerializeField]
@@ -40,21 +46,50 @@ public class GameController : MonoBehaviour
     [ReadOnly]
     private float wave_time;
 
+    [ReadOnly]
+    HudManager hud_manager;
+
+    [SerializeField]
+    public int bravery_level = 0;
+    [SerializeField]
+    public int battery_level = 0;
+    [SerializeField]
+    public int luck = 0;
+
+
+    [Header("UI Overlays")]
+    [SerializeField] CanvasGroup GameOverCanvas;
+    [SerializeField] CanvasGroup UpgradeCanvas;
+
+
+    [Header("Music")]
+    [SerializeField] AudioClip gameLoopMusic;
+    [SerializeField] AudioClip upgradeMusic;
+    AudioSource bgm;
+    
+
     // Start is called before the first frame update
     void Start()
     {
-        wave_controller = (WaveController)FindObjectOfType(typeof(WaveController));   
+        wave_controller = (WaveController)FindObjectOfType(typeof(WaveController));
+        energy_controller = (EnergyController)FindObjectOfType(typeof(EnergyController));
+        mood_controller = (MoodController)FindObjectOfType(typeof(MoodController));
+        hud_manager = (HudManager) FindObjectOfType(typeof(HudManager));   
         RecalculateDifficulty();
+
+        bgm = GameObject.FindWithTag("Music Manager").GetComponent<AudioSource>();
+
+
+        time = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
         time -= Time.deltaTime;
+        hud_manager.SetNightProgress(wave_time - time, wave_time);
         if(time <= 0 && wave_controller.active){
             EndWave();
-        }else if(time <= 0){
-            StartWave();
         }
         RecalculateDifficulty();
     }
@@ -65,12 +100,19 @@ public class GameController : MonoBehaviour
     * Game Loop
     * -----------------------------------------------------
     **/
-    void StartWave(){
+    public void StartWave(){
         time = base_time  + time_increase_per_wave * wave;
         wave_time = time;
         Debug.Log(time);
         //call wave controller
         wave_controller.StartWave();
+        //reset player stats
+        mood_controller.ResetMood();
+        energy_controller.ResetEnergy();
+
+        bgm.Stop();
+        bgm.clip = gameLoopMusic;
+        bgm.Play();
     }
 
     void EndWave(){
@@ -78,7 +120,38 @@ public class GameController : MonoBehaviour
         Debug.Log(wave);
         //call wave controller
         wave_controller.EndWave();
+        AddExp(1);
+
+
         // open menu
+        UpgradeRoom();
+    }
+
+    void UpgradeRoom() {
+        Vector3 roomPos = new Vector3(0, -3.5f, 0);
+        mood_controller.gameObject.transform.position = roomPos;
+
+        bgm.Stop();
+        bgm.clip = upgradeMusic;
+        bgm.Play();
+
+        //StartCoroutine(UpgradeMenuVisible(true));
+    }
+    IEnumerator UpgradeMenuVisible(bool isVisible) {
+
+        float step = (isVisible) ? 0.01f : -0.02f;
+
+        while( (isVisible && UpgradeCanvas.alpha < 1) 
+            || (!isVisible && UpgradeCanvas.alpha > 0)) {
+            UpgradeCanvas.alpha += step;
+            yield return new WaitForSecondsRealtime(Time.unscaledDeltaTime);
+        }
+
+        UpgradeCanvas.interactable = isVisible;
+        UpgradeCanvas.blocksRaycasts = isVisible;
+    }
+    public void hideUpgradeMenu() {
+        StartCoroutine(UpgradeMenuVisible(false));
     }
 
 
@@ -86,11 +159,25 @@ public class GameController : MonoBehaviour
     // Custom controller functions
     public void EndGame(){
         // TODO 
+        Time.timeScale = 0;
 
         // go to main menu
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        
+        StartCoroutine(EndGameCoroutine());
     }
+    IEnumerator EndGameCoroutine() {
+
+        float step = 0.01f;
+        while(GameOverCanvas.alpha < 1) {
+            GameOverCanvas.alpha += step*Time.unscaledDeltaTime;
+            yield return new WaitForSecondsRealtime(Time.unscaledDeltaTime);
+        }
+
+        yield return new WaitForSecondsRealtime(3f);
+
+        GameObject.FindWithTag("Scene Manager").GetComponent<TransitionManager>().ChangeScene("MainMenu");
+        yield break;
+    }
+
 
     /**
     * -----------------------------------------------------
@@ -121,23 +208,30 @@ public class GameController : MonoBehaviour
     // Listener for mood observer
     public void OnMoneyCollected(int new_money){
         money += new_money;
+        hud_manager.SetBits(money);
     }
 
-    public bool CanPurchase(int price){
-        if(price <= money){
+    public int getPrice( int index){
+        return weapon_controller.getPrice(index);
+    }
+
+    public bool CanPurchase( int index){
+        int price = weapon_controller.getPrice(index);
+        if(price <= money && price > 0){
             return true;
         }
         return false;
-
     }
 
-    public bool Purchase (int price){
-        if(price <= money){
+    public bool Purchase( int index ){
+        int price = weapon_controller.getPrice(index);
+        if(price <= money && price > 0){
             money -= price;
+            weapon_controller.upgrade(index);
+            hud_manager.SetBits(money);
             return true;
         }
         return false;
-
     }
 
     /**
@@ -156,6 +250,30 @@ public class GameController : MonoBehaviour
         }
         return false;
     }
+
+    public bool increase_bravery(){
+        bool succesfull = ExpendExp(1);
+        if(succesfull){
+            bravery_level++;
+        }
+        return succesfull;
+    }
+
+    public bool increase_lucky(){
+        bool succesfull = ExpendExp(1);
+        if(succesfull){
+            luck++;
+        }
+        return succesfull;
+    }
+    public bool increase_battery(){
+        bool succesfull = ExpendExp(1);
+        if(succesfull){
+            battery_level++;
+        }
+        return succesfull;
+    }
+
 
 
 }

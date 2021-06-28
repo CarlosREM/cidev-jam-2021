@@ -7,14 +7,17 @@ using UnityEngine.InputSystem;
 public class MovementController : MonoBehaviour
 {
     Rigidbody2D myRB;
-    // Transform myAvatar;
+    Animator playerAnimator;
 
     //Player movement
-    [SerializeField] 
-    InputAction WASD;
+    [SerializeField] InputAction WASD;
     Vector2 movementInput;
-    [SerializeField] 
-    float movementSpeed;
+
+    [SerializeField] float movementSpeed;
+
+    
+    [SerializeField] InputAction shootAction;
+    bool isShooting = false;
 
 
     private void OnEnable() {
@@ -27,7 +30,22 @@ public class MovementController : MonoBehaviour
     void Start()
     {
         myRB = GetComponent<Rigidbody2D>();
-        // myAvatar =transform.GetChild(0);
+        playerAnimator = GetComponent<Animator>();
+
+        Physics2D.IgnoreLayerCollision(9, 10);
+        
+        //bullets should not collide money
+        Physics2D.IgnoreLayerCollision(11, 10);
+
+        // player collider is only for enemy detection
+        Physics2D.IgnoreLayerCollision(9, 13);
+
+        // bullets ignore player terrain collider
+        Physics2D.IgnoreLayerCollision(10, 14);
+
+        shootAction.Enable();
+        shootAction.started += context => { isShooting = true;};
+        shootAction.canceled += context => { isShooting = false;};
     }
 
     // Update is called once per frame
@@ -35,9 +53,20 @@ public class MovementController : MonoBehaviour
     {
         movementInput = WASD.ReadValue<Vector2>();
 
-        if(movementInput.x != 0){
-            transform.localScale = new Vector2(-Mathf.Sign(movementInput.x) * Mathf.Abs(transform.localScale.x), transform.localScale.y);
+        float playAnimator = (movementInput.magnitude == 0) ? 0 : 1;
+
+        if (playAnimator == 0) {
+            string animState = (isShooting) ? "Attack" : "Movement";
+            playerAnimator.Play(animState, 0, 0);
         }
+        
+        else {
+            playerAnimator.SetFloat("Horizontal", movementInput.x);
+            playerAnimator.SetFloat("Vertical", movementInput.y);
+        }
+        playerAnimator.SetFloat("AnimSpeed", playAnimator);
+
+        playerAnimator.SetBool("Attack", isShooting);
     }
 
     private void FixedUpdate() {

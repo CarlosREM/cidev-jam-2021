@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2372617911692157755}
   m_Layer: 0
   m_Name: Music Manager
-  m_TagString: Untagged
+  m_TagString: Music Manager
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,7 +46,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
